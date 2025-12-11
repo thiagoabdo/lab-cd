@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevip
+  namespace: kube-system
+data:
+  # Special DHCP CIDR – this makes the controller give all
+  # LoadBalancer Services the IP 0.0.0.0
+  cidr-global: 0.0.0.0/32
+
