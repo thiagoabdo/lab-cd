@@ -39,7 +39,7 @@ spec:
               value: "true"
             # Interface on your Talos nodes
             - name: vip_interface
-              value: "eth0"
+              value: "ens18"
 
             # (Optional) you can drop lb_enable entirely for service-only ARP:
             # - name: lb_enable
