@@ -23,25 +23,27 @@ spec:
           args:
             - manager
           env:
-            # L2/ARP mode
-            - name: vip_arp
+            # === Mode / Features ===
+            # We only want services; Talos handles API VIP.
+            - name: cp_enable
+              value: "false"
+            - name: svc_enable
               value: "true"
 
-            # Enable service LoadBalancers
-            - name: lb_enable
-              value: "true"
-
-            # One leader *per service* (much better distribution)
+            # Per-service leader election (better distribution)
             - name: svc_election
               value: "true"
 
-            # Interface on your Talos nodes (adjust if not eth0)
+            # === VIP config / ARP mode ===
+            - name: vip_arp
+              value: "true"
+            # Interface on your Talos nodes
             - name: vip_interface
               value: "eth0"
 
-            # Do NOT manage control-plane VIP (Talos already does this)
-            - name: cp_enable
-              value: "false"
+            # (Optional) you can drop lb_enable entirely for service-only ARP:
+            # - name: lb_enable
+            #   value: "false"
           securityContext:
             capabilities:
               add:
