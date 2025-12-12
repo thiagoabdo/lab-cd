@@ -1,0 +1,10 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: default-envoy-proxy
+  namespace: envoy-gateway
+spec:
+  telemetry:
+    metrics:
+      prometheus:
+        disable: false
