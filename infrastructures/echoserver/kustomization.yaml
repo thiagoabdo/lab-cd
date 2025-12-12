@@ -8,6 +8,7 @@ resources:
 - deployment.yaml
 - service.yaml
 - httproute.yaml
+- httproute-ip.yaml
 commonLabels:
   app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/part-of: homelab
