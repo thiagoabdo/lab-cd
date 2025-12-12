@@ -14,7 +14,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /echo
+        value: /
     backendRefs:
     - name: echoserver
       port: 80
