@@ -4,5 +4,4 @@ metadata:
   name: envoy-gateway-class
   namespace: flux-system
 spec:
-  controllerName: gateway.envoyproxy.io
-  description: "Envoy Gateway API implementation"
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
