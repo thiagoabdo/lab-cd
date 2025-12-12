@@ -1,0 +1,125 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: democratic-csi-iscsi
+  namespace: democratic-csi
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: democratic-csi
+      version: "0.14.x"
+      sourceRef:
+        kind: HelmRepository
+        name: democratic-csi
+        namespace: democratic-csi
+      interval: 1m
+  values:
+    # freenas-api-iscsi driver configuration
+    driver: freenas-api-iscsi
+    
+    csiDriver:
+      name: org.democratic-csi.iscsi
+    
+    # Storage class configuration for iSCSI
+    storageClasses:
+    - name: freenas-iscsi
+      defaultClass: false
+      reclaimPolicy: Delete
+      volumeBindingMode: Immediate
+      allowVolumeExpansion: true
+      parameters:
+        # FreeNAS connection details
+        server: "172.16.0.102"
+        
+        # Dataset configuration
+        pool: "tank"
+        datasetParentName: "tank/k8s/iscsi/vols"
+        datasetEnableQuotas: true
+        datasetEnableReservation: false
+        
+        # iSCSI specific settings
+        targetPortal: "172.16.0.102:3260"
+        targetGroup: "1"
+        interface: ""
+        
+        # Advanced settings
+        zvolBlocksize: "16k"
+        zvolSparse: true
+        zvolCompression: "lz4"
+        zvolDedup: "off"
+        zvolSync: "standard"
+        
+    # Node configuration
+    node:
+      driver:
+        config:
+          driver: freenas-api-iscsi
+          instance_id:
+          httpConnection:
+            protocol: https
+            host: "172.16.0.102"
+            port: 443
+            apiKey: ""  # Add your API key here
+            username: "root"
+            password: ""  # Or use password if no API key
+            allowInsecure: true  # Set to false for production with valid certs
+          
+          zfs:
+            datasetParentName: "tank/k8s/iscsi/vols"
+            detachedSnapshotsDatasetParentName: "tank/k8s/iscsi/snaps"
+            datasetEnableQuotas: true
+            datasetEnableReservation: false
+            datasetPermissionsMode: "0777"
+            datasetPermissionsUser: "root"
+            datasetPermissionsGroup: "wheel"
+            
+          iscsi:
+            targetPortal: "172.16.0.102:3260"
+            targetGroup: "1"
+            interface: ""
+
+    # Controller configuration
+    controller:
+      driver:
+        config:
+          driver: freenas-api-iscsi
+          instance_id:
+          httpConnection:
+            protocol: https
+            host: "172.16.0.102"
+            port: 443
+            apiKey: ""  # Add your API key here
+            username: "root"
+            password: ""  # Or use password if no API key
+            allowInsecure: true  # Set to false for production with valid certs
+          
+          zfs:
+            datasetParentName: "tank/k8s/iscsi/vols"
+            detachedSnapshotsDatasetParentName: "tank/k8s/iscsi/snaps"
+            datasetEnableQuotas: true
+            datasetEnableReservation: false
+            datasetPermissionsMode: "0777"
+            datasetPermissionsUser: "root"
+            datasetPermissionsGroup: "wheel"
+            
+          iscsi:
+            targetPortal: "172.16.0.102:3260"
+            targetGroup: "1"
+            interface: ""
+
+    # Security context
+    podSecurityContext:
+      runAsNonRoot: false
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 0
+
+    # Resource limits
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
