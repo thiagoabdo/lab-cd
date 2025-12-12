@@ -9,7 +9,7 @@ resources:
 - service.yaml
 - httproute.yaml
 - httproute-ip.yaml
-- db-secret.enc.yaml
+- basic-auth.enc.yaml
 commonLabels:
   app.kubernetes.io/managed-by: kustomize
   app.kubernetes.io/part-of: homelab
