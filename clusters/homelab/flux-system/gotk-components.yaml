@@ -10131,7 +10131,6 @@ spec:
         - --log-level=info
         - --log-encoding=json
         - --enable-leader-election
-        - --sops-age-secret=sops-age
         env:
         - name: RUNTIME_NAMESPACE
           valueFrom:
