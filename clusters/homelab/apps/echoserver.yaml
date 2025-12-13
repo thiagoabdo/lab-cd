@@ -7,6 +7,13 @@ spec:
   interval: 10m0s
   path: ./infrastructures/echoserver
   prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
   dependsOn:
   - name: gateway-api-class
   - name: envoy-gateway
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
